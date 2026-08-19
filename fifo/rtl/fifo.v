@@ -38,17 +38,11 @@ always @ (posedge clk or negedge rst_n) begin
         if(wptr == rdptr) begin
             empty <= 1'b1;
         end
-        if((wptr[3] != rdptr[3]) && (wptr[2:0] == rdptr[2])) begin 
+        if((wptr[3] != rdptr[3]) && (wptr[2:0] == rdptr[2:0])) begin 
             full <= 1'b1;
         end
     end
-
-
 end
-
-
-
-
 
 
 endmodule
