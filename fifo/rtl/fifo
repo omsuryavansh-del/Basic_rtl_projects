@@ -1,0 +1,115 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "12.0 (devel)" "(s20150603-1110-g18392a46)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "F:\Verilog\iverilog\lib\ivl\system.vpi";
+:vpi_module "F:\Verilog\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "F:\Verilog\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "F:\Verilog\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "F:\Verilog\iverilog\lib\ivl\va_math.vpi";
+S_00000210a55d2db0 .scope module, "fifo" "fifo" 2 1;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "clk";
+    .port_info 1 /INPUT 1 "rst_n";
+    .port_info 2 /INPUT 1 "write_en";
+    .port_info 3 /OUTPUT 1 "read_en";
+    .port_info 4 /INPUT 8 "data_in";
+    .port_info 5 /OUTPUT 8 "data_out";
+    .port_info 6 /OUTPUT 1 "full";
+    .port_info 7 /OUTPUT 1 "empty";
+o00000210a5607fd8 .functor BUFZ 1, C4<z>; HiZ drive
+v00000210a55d2f40_0 .net "clk", 0 0, o00000210a5607fd8;  0 drivers
+o00000210a5608008 .functor BUFZ 8, C4<zzzzzzzz>; HiZ drive
+v00000210a55d2fe0_0 .net "data_in", 7 0, o00000210a5608008;  0 drivers
+v00000210a55d3080_0 .var "data_out", 7 0;
+v00000210a564e850_0 .var "empty", 0 0;
+v00000210a564e8f0_0 .var "full", 0 0;
+v00000210a564e990 .array "mem", 0 7, 7 0;
+v00000210a564ea30_0 .var "rdptr", 3 0;
+o00000210a56080f8 .functor BUFZ 1, C4<z>; HiZ drive
+v00000210a564ead0_0 .net "read_en", 0 0, o00000210a56080f8;  0 drivers
+o00000210a5608128 .functor BUFZ 1, C4<z>; HiZ drive
+v00000210a564eb70_0 .net "rst_n", 0 0, o00000210a5608128;  0 drivers
+v00000210a564eca0_0 .var "wptr", 3 0;
+o00000210a5608188 .functor BUFZ 1, C4<z>; HiZ drive
+v00000210a564ed40_0 .net "write_en", 0 0, o00000210a5608188;  0 drivers
+E_00000210a5729350/0 .event negedge, v00000210a564eb70_0;
+E_00000210a5729350/1 .event posedge, v00000210a55d2f40_0;
+E_00000210a5729350 .event/or E_00000210a5729350/0, E_00000210a5729350/1;
+    .scope S_00000210a55d2db0;
+T_0 ;
+    %wait E_00000210a5729350;
+    %load/vec4 v00000210a564eb70_0;
+    %nor/r;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.0, 8;
+    %pushi/vec4 0, 0, 4;
+    %assign/vec4 v00000210a564eca0_0, 0;
+    %pushi/vec4 0, 0, 4;
+    %assign/vec4 v00000210a564ea30_0, 0;
+    %pushi/vec4 0, 0, 8;
+    %assign/vec4 v00000210a55d3080_0, 0;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/vec4 v00000210a564ed40_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.2, 8;
+    %load/vec4 v00000210a55d2fe0_0;
+    %load/vec4 v00000210a564eca0_0;
+    %parti/s 3, 0, 2;
+    %pad/u 5;
+    %ix/vec4 3;
+    %ix/load 4, 0, 0; Constant delay
+    %assign/vec4/a/d v00000210a564e990, 0, 4;
+    %load/vec4 v00000210a564eca0_0;
+    %addi 1, 0, 4;
+    %assign/vec4 v00000210a564eca0_0, 0;
+T_0.2 ;
+    %load/vec4 v00000210a564ead0_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.4, 8;
+    %load/vec4 v00000210a55d3080_0;
+    %load/vec4 v00000210a564ea30_0;
+    %parti/s 3, 0, 2;
+    %pad/u 5;
+    %ix/vec4 3;
+    %ix/load 4, 0, 0; Constant delay
+    %assign/vec4/a/d v00000210a564e990, 0, 4;
+    %load/vec4 v00000210a564ea30_0;
+    %addi 1, 0, 4;
+    %assign/vec4 v00000210a564ea30_0, 0;
+T_0.4 ;
+    %load/vec4 v00000210a564eca0_0;
+    %load/vec4 v00000210a564ea30_0;
+    %cmp/e;
+    %jmp/0xz  T_0.6, 4;
+    %pushi/vec4 1, 0, 1;
+    %assign/vec4 v00000210a564e850_0, 0;
+T_0.6 ;
+    %load/vec4 v00000210a564eca0_0;
+    %parti/s 1, 3, 3;
+    %load/vec4 v00000210a564ea30_0;
+    %parti/s 1, 3, 3;
+    %cmp/ne;
+    %flag_get/vec4 4;
+    %load/vec4 v00000210a564eca0_0;
+    %parti/s 3, 0, 2;
+    %load/vec4 v00000210a564ea30_0;
+    %parti/s 1, 2, 3;
+    %pad/u 3;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %and;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.8, 8;
+    %pushi/vec4 1, 0, 1;
+    %assign/vec4 v00000210a564e8f0_0, 0;
+T_0.8 ;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "fifo.v";
