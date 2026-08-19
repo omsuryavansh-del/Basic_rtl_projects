@@ -21,28 +21,23 @@ reg [7:0] mem [7:0];                          // 8 bit memory array with depth o
 always @ (posedge clk or negedge rst_n) begin
     if (!rst_n) begin
         wptr <= 4'b0;
-        rdptr <= 4'b0;
-        data_out <= 8'b0;        
+        rdptr <= 4'b0;      
     end
 
     else begin
-        if (write_en) begin 
+        if (write_en && !full) begin 
             mem[wptr[2:0]] <= data_in;
             wptr <= wptr + 1'b1;
         end
-        if (read_en) begin
+        if (read_en && !empty) begin
             mem[rdptr[2:0]] <= data_out;
             rdptr <= rdptr + 1'b1;
         end
-        
-        if(wptr == rdptr) begin
-            empty <= 1'b1;
-        end
-        if((wptr[3] != rdptr[3]) && (wptr[2:0] == rdptr[2:0])) begin 
-            full <= 1'b1;
-        end
+    
     end
 end
-
+assign empty = wptr == rdptr;
+assign full = ((wptr[3] != rdptr[3]) && (wptr[2:0] == rdptr[2:0])) ;
 
 endmodule
+
