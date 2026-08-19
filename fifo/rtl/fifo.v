@@ -3,13 +3,13 @@ module fifo (
     input rst_n,
 
     input write_en,
-    output read_en,
+    input read_en,
 
     input [7:0] data_in,
     output reg [7:0] data_out,
 
-    output reg full,
-    output reg empty
+    output full,
+    output empty
 
 );
 
@@ -30,7 +30,7 @@ always @ (posedge clk or negedge rst_n) begin
             wptr <= wptr + 1'b1;
         end
         if (read_en && !empty) begin
-            mem[rdptr[2:0]] <= data_out;
+            data_out <= mem[rdptr[2:0]];
             rdptr <= rdptr + 1'b1;
         end
     
@@ -40,4 +40,3 @@ assign empty = wptr == rdptr;
 assign full = ((wptr[3] != rdptr[3]) && (wptr[2:0] == rdptr[2:0])) ;
 
 endmodule
-
