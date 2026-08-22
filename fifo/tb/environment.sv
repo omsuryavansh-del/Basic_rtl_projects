@@ -28,22 +28,23 @@ class environment;
 
     endfunction
 
-    task run(input int n);
-
+    function void connect();
     dr.f_if = f_if;
     mon.f_if = f_if;
-    
-    
+    endfunction
+
+    task run(input int n);
+    int target = scb.num_checked + n;
     fork
     gen.generator(n);
     dr.drive();
     mon.monitor();
     scb.check();
     join_none
-    
-    #1
-    wait(dr.driver_mbx.num() == 0);
-    
+
+    wait(scb.num_checked == target);
+    disable fork;
+
     endtask
 
 endclass 

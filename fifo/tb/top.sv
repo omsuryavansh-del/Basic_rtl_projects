@@ -31,7 +31,8 @@ module top;
         f_if.data_in = 0;
   
         env = new;
-        env.f_if = f_if;    
+        env.f_if = f_if;   
+        env.connect(); 
         #10 f_if.rst_n = 1;
         env.run(5);
         $display("Simulation finished successfully!");
