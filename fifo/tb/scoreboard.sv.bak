@@ -1,0 +1,28 @@
+import f_pkg::*;
+
+class scoreboard;
+    transaction tr;
+    mailbox scbm;
+
+    function void checker();
+    logic [7:0] chimpu;
+    scbm.get(tr);
+    
+     $display("transaction recieved from monitor rst_n = %0b || w_en = %0b || rd_en = %0b || data_in = %0b || data_out = %0b",
+                    rst_n,write_en,read_en,data_in,data_out);
+    int fifo[$,7];
+    if(tr.write_en && !full) begin 
+        fifo.push_back(tr.data_in);
+    end
+
+    if(tr.read_en && !empty) begin
+        chimpu = fifo.pop_front();
+    end
+    if(chimpu == tr.data_out) $display("test passed");
+    else begin
+        $display("test failed rst_n = %0b | expected :: data_out = %0b || data_in = %0b || got :: w_en = %0b || rd_en = %0b || data_in = %0b || data_out = %0b ",
+                    rst_n,chimpu,tr.data_in,write_en,read_en,data_in,data_out);
+    end
+    endfunction
+
+endclass
